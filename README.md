@@ -1,6 +1,6 @@
 # SecureSecretKeySpec
 
-Originally, this repository was located in the "dbsystel" organization. With their kind permission, I moved it to my space in August 2023. The [original repository](https://github.com/xformerfhs/SecureSecretKeySpec) will no longer be maintained.
+Originally, this repository was located in the "dbsystel" organization. With their kind permission, I moved it to my space in August 2023. The [original repository](https://github.com/dbsystel/SecureSecretKeySpec) will no longer be maintained.
 
 Java's `SecretKeySpec` implementation is unsafe. It stores the key bytes in its original form and does not automatically delete them when the key is no longer in use, so it is still visible in memory until the next garbage collection.
 
