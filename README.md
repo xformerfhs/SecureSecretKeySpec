@@ -50,4 +50,4 @@ Frank Schwab ([Mail](mailto:xformer.github@proton.me "Mail"))
 ## License
 
 SecureSecretKeySpec is released under the Apache license, V2.0.
-See "LICENSE" for details.
+See [LICENSE](LICENSE) for details.
