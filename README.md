@@ -2,11 +2,14 @@
 
 > 💡 Originally, this repository was located in the [dbsystel](https://github.com/dbsystel) organization. With their kind permission, I moved it to my space in August 2023. The [original repository](https://github.com/dbsystel/SecureSecretKeySpec) is archived and no longer maintained.
 
-Java's `SecretKeySpec` implementation is unsafe. It stores the key bytes in its original form and does not automatically delete them when the key is no longer in use, so it is still visible in memory until the next garbage collection.
+Java's `SecretKeySpec` implementation is unsafe.
+It stores the key bytes in its original form and does not automatically delete them when the key is no longer in use, so it is still visible in memory until the next garbage collection.
 
-This makes it possible to easily find keys in a memory dump. One just has to search for the algorithm names and the keys are stored right next to them.
+This makes it possible to easily find keys in a memory dump.
+One just has to search for the algorithm names and the keys are stored right next to them.
 
-`SecureSecretKeySpec` is a drop-in replacement for Java's SecretKeySpec. It does multiple things to enhance the security of the stored key:
+`SecureSecretKeySpec` is a drop-in replacement for Java's SecretKeySpec.
+It does multiple things to enhance the security of the stored key:
 
 * Implements the `AutoCloseable` interface so the key is automatically destroyed when the key is closed
 * Implements the `Destroyable` interface (unlike the original `SecretKeySpec`, this class has a working `destroy` method)
@@ -28,7 +31,11 @@ A typical usage would be something like this:
        ...
     } // Here the SecureSecretKeySpec is automatically destroyed due to the AutoClosable interface
 
-Note that this is security by obscurity. It does not make it impossible to get at the key. It just makes it harder and there are no visible clues within the memory dump any more. However, if an attacker analyzes the memory dump he will be able to extract the key (with quite a bit of effort, though). One could make this a bit more secure if one uses an Java code obfuscator so the class names will be random.
+Note that this is security by obscurity.
+It does not make it impossible to get at the key.
+It just makes it harder and there are no visible clues within the memory dump any more.
+However, if an attacker analyzes the memory dump he will be able to extract the key (with quite a bit of effort, though).
+One could make this a bit more secure if one uses an Java code obfuscator so the class names will be random.
 
 ## Contributing
 
@@ -40,4 +47,5 @@ Frank Schwab ([Mail](mailto:xformer.github@proton.me "Mail"))
 
 ## License
 
-SecureSecretKeySpec is released under the Apache license, V2.0. See "LICENSE" for details.
+SecureSecretKeySpec is released under the Apache license, V2.0.
+See "LICENSE" for details.
