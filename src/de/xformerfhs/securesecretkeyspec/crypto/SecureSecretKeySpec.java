@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2024
- * All rights reserved.
+ * SPDX-FileCopyrightText: 2016-2023 DB Systel GmbH
+ * SPDX-FileCopyrightText: 2023-2024 Frank Schwab
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -17,6 +17,7 @@
  * limitations under the License.
  *
  * Author: Frank Schwab
+ * All rights reserved.
  *
  * Changes:
  *     2016-09-26: V2.0.0: Use ProtectedByteArray. fhs

@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2024
- * All rights reserved.
+ * SPDX-FileCopyrightText: 2015-2023 DB Systel GmbH
+ * SPDX-FileCopyrightText: 2023-2024 Frank Schwab
  *
  * SPDX-License-Identifier: Apache-2.0
  *
