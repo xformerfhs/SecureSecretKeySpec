@@ -1,6 +1,6 @@
 /*
- * SPDX-FileCopyrightText: 2019-2023 DB Systel GmbH
- * SPDX-FileCopyrightText: 2023 Frank Schwab
+ * Copyright (c) 2024
+ * All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -28,7 +28,9 @@
  *     2021-08-13: V1.5.0: Make algorithm to find SecureRandom algorithm more robust. fhs
  *     2021-08-31: V1.6.0: Pick strong default instance, if necessary. fhs
  *     2021-08-31: V1.6.1: Corrected variable names. fhs
+ *     2023-05-20: V1.6.2: Renamed instance variables. fhs
  */
+ 
 package de.db.bcm.crypto;
 
 import java.security.NoSuchAlgorithmException;
@@ -37,61 +39,63 @@ import java.security.Security;
 import java.util.Set;
 
 /**
- * A class to get the most secure SecureRandom instance
+ * A class to get the most secure SecureRandom instance.
  *
  * @author Frank Schwab
- * @version 1.6.1
+ * @version 1.6.2
  */
 public class SecureRandomFactory {
-   //******************************************************************
-   // Constructor
-   //******************************************************************
+   // ======== Constructor ========
 
    /**
-    * Private constructor
+    * Private constructor.
     *
-    * <p>This class is not meant to be instantiated.</p>
+    * <p>This class is not meant to be instanced.</p>
     */
    private SecureRandomFactory() {
-      throw new IllegalStateException("Utility class");
+      throw new IllegalStateException("This class is not meant to be instanced");
    }
 
-   //******************************************************************
-   // Instance variables
-   //******************************************************************
 
-   private static String m_SecureAlgorithmName;
-   private static SecureRandom m_SecureRandomSingleton;
+   // ======== Instance variables ========
+
+   /**
+    * Name of the Secure Pseudo-Random Number Generator.
+    */
+   private static String secureAlgorithmName;
+
+   /**
+    * Singleton with an instance of a Secure Pseudo-Random Number Generator.
+    */
+   private static SecureRandom secureRandomSingleton;
 
 
-   //******************************************************************
-   // Public methods
-   //******************************************************************
+   // ======== Public methods ========
 
    /**
     * Get optimal SecureRandom instance depending on the platform.
     *
     * <p>This method returns the default SecureRandom instance, if there is no optimal one.</p>
     *
-    * @return Optimal SecureRandom instance
+    * @return Optimal SecureRandom instance.
     */
    public static synchronized SecureRandom getSensibleInstance() {
       SecureRandom result;
 
       // Only get the name of the SecureRandom algorithm if it has not been determined, yet.
-      if (m_SecureAlgorithmName == null)
-         m_SecureAlgorithmName = getOptimalSecureRandomAlgorithmName();
+      if (secureAlgorithmName == null)
+         secureAlgorithmName = getOptimalSecureRandomAlgorithmName();
 
-      // Use the optimal algorithm, if there is one
-      if (m_SecureAlgorithmName.length() > 0)
+      // Use the optimal algorithm, if there is one.
+      if (!secureAlgorithmName.isEmpty())
          try {
-            result = SecureRandom.getInstance(m_SecureAlgorithmName);
+            result = SecureRandom.getInstance(secureAlgorithmName);
          } catch (NoSuchAlgorithmException e) {
-            // The chosen algorithm was not present, so use the default, which is guaranteed to work
+            // The chosen algorithm was not present, so use the default, which is guaranteed to work.
             result = getDefaultInstance();
          }
       else {
-         // Choose the default if there could no optimal algorithm be found
+         // Choose the default if there could no optimal algorithm be found.
          result = getDefaultInstance();
       }
 
@@ -103,22 +107,20 @@ public class SecureRandomFactory {
     *
     * <p>This method returns the default SecureRandom instance, if there is no optimal one.</p>
     *
-    * @return Optimal SecureRandom singleton instance
+    * @return Optimal SecureRandom singleton instance.
     */
    public static synchronized SecureRandom getSensibleSingleton() {
-      if (m_SecureRandomSingleton == null)
-         m_SecureRandomSingleton = getSensibleInstance();
+      if (secureRandomSingleton == null)
+         secureRandomSingleton = getSensibleInstance();
 
-      return m_SecureRandomSingleton;
+      return secureRandomSingleton;
    }
 
 
-   //******************************************************************
-   // Private methods
-   //******************************************************************
+   // ======== Private methods ========
 
    /**
-    * Get optimal SecureRandom provider
+    * Get optimal SecureRandom provider.
     *
     * <p>
     * Choose a non-blocking SecureRandom provider. On Windows this is the "WINDOWS-PRNG" provider.
@@ -126,12 +128,12 @@ public class SecureRandomFactory {
     * look for just "NATIVEPRNG" as this is non-blocking for the .nextBytes method, as well.
     * </p>
     *
-    * @return Name of optimal SecureRandom provider, or an empty string if none is found
+    * @return Name of optimal SecureRandom provider, or an empty string if none is found.
     */
    private static String getOptimalSecureRandomAlgorithmName() {
       String result = "";
 
-      // These are the algorithms we are looking for
+      // These are the algorithms we are looking for.
       boolean foundWindows = false;
       boolean foundNativeNonBlocking = false;
       boolean foundNativeOther = false;
@@ -140,13 +142,13 @@ public class SecureRandomFactory {
       String nativeNonBlockingAlgorithm = "";
       String nativeOtherAlgorithm = "";
 
-      // Scan through the list of SecureRandom algorithms
+      // Scan through the list of SecureRandom algorithms.
       final Set<String> algorithms = Security.getAlgorithms("SecureRandom");
 
       // The order of the entries is not defined so loop through all entries
-      // and remember what we found
+      // and remember what we found.
       for (String algorithm : algorithms) {
-         // Use the native windows SPRNG on Windows
+         // Use the native windows SPRNG on Windows.
          if (algorithm.startsWith("WINDOWS-")) {
             foundWindows = true;
             windowsAlgorithm = algorithm;
@@ -158,7 +160,7 @@ public class SecureRandomFactory {
          // Blocking must be avoided. On systems with heavy usage of SPRNG
          // blocks can last for minutes. See https://lwn.net/Articles/808575/,
          // https://unix.stackexchange.com/questions/324209/when-to-use-dev-random-vs-dev-urandom,
-         // or https://words.filippo.io/dispatches/linux-csprng/
+         // or https://words.filippo.io/dispatches/linux-csprng/ .
          if (algorithm.startsWith("NATIVE")) {
             if (algorithm.endsWith("NONBLOCKING")) {
                foundNativeNonBlocking = true;
@@ -170,7 +172,7 @@ public class SecureRandomFactory {
          }
       }
 
-      // Now choose the appropriate algorithm
+      // Now choose the appropriate algorithm.
       if (foundWindows)
          result = windowsAlgorithm;
       else if (foundNativeNonBlocking)
@@ -178,14 +180,14 @@ public class SecureRandomFactory {
       else if (foundNativeOther)
          result = nativeOtherAlgorithm;
 
-      // If none of the "good" algorithms was found return an empty string
+      // If none of the "good" algorithms was found return an empty string.
       return result;
    }
 
    /**
-    * Get the default SecureRandom instance
+    * Get the default SecureRandom instance.
     *
-    * @return Default SecureRandom instance
+    * @return Default SecureRandom instance.
     */
    private static SecureRandom getDefaultInstance() {
       SecureRandom result;
@@ -196,7 +198,7 @@ public class SecureRandomFactory {
          result = new SecureRandom();
       }
 
-      m_SecureAlgorithmName = result.getAlgorithm();
+      secureAlgorithmName = result.getAlgorithm();
 
       return result;
    }
