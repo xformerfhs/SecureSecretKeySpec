@@ -36,9 +36,9 @@
  *     2023-05-20: V2.0.3: Renamed instance variables. fhs
  */
  
-package de.xformer.securesecretkeyspec.crypto;
+package de.xformerfhs.securesecretkeyspec.crypto;
 
-import de.xformer.securesecretkeyspec.arrays.ArrayHelper;
+import de.xformerfhs.securesecretkeyspec.arrays.ArrayHelper;
 
 import java.security.SecureRandom;
 import java.util.Arrays;

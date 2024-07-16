@@ -39,9 +39,9 @@
  *     2024-07-12: V2.8.0: Add constructor with ProtectedByteArray. fhs
  */
 
-package de.xformer.securesecretkeyspec.crypto;
+package de.xformerfhs.securesecretkeyspec.crypto;
 
-import de.xformer.securesecretkeyspec.arrays.ArrayHelper;
+import de.xformerfhs.securesecretkeyspec.arrays.ArrayHelper;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;

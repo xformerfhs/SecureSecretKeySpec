@@ -21,7 +21,7 @@
  * Changes:
  *     2020-03-10: V1.0.0: Created. fhs
  */
-package de.xformer.securesecretkeyspec.crypto;
+package de.xformerfhs.securesecretkeyspec.crypto;
 
 import org.junit.*;
 
