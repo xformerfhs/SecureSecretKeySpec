@@ -28,7 +28,7 @@
  *     2024-07-14: V1.2.1: Clean up methods. fhs
  */
 
-package de.db.bcm.arrays;
+package de.xformer.securesecretkeyspec.arrays;
 
 import java.util.Arrays;
 import java.util.Objects;

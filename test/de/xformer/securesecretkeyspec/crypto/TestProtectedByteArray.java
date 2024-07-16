@@ -22,7 +22,7 @@
  *     2020-03-11: V1.0.0: Created. fhs
  *     2021-09-03: V1.0.1: Use try-with-resources. fhs
  */
-package de.db.bcm.crypto;
+package de.xformer.securesecretkeyspec.crypto;
 
 import org.junit.*;
 
