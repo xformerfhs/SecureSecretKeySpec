@@ -22,14 +22,14 @@
  * Changes:
  *     2016-09-26: V2.0.0: Use ProtectedByteArray. fhs
  *     2016-11-24: V2.1.0: Implement "javax.security.auth.Destroyable" interface. fhs
- *     2018-08-15: V2.1.1: Added a few "finals". fhs
+ *     2018-08-15: V2.1.1: Add a few "finals". fhs
  *     2020-03-10: V2.2.0: Make comparable with "SecretKeySpec", constructor argument checks,
  *                         throw IllegalStateExceptions when instance has been closed or destroyed. fhs
- *     2020-03-11: V2.2.1: Added some "throws" statements. fhs
- *     2020-03-13: V2.3.0: Added checks for null. fhs
+ *     2020-03-11: V2.2.1: Add some "throws" statements. fhs
+ *     2020-03-13: V2.3.0: Add checks for null. fhs
  *     2020-03-23: V2.4.0: Restructured source code according to DBS programming guidelines. fhs
  *     2020-12-04: V2.5.0: Corrected several SonarLint findings and made class serializable. fhs
- *     2020-12-29: V2.6.0: Made thread safe. fhs
+ *     2020-12-29: V2.6.0: Make thread safe. fhs
  *     2021-05-26: V2.7.0: This class is no longer serializable. It never should have been. fhs
  *     2021-09-03: V2.7.1: Correct signatures of Serializable methods. fhs
  *     2021-09-28: V2.7.2: Ensure "equals" clears sensitive array data. fhs
@@ -38,6 +38,7 @@
  *     2023-05-20: V2.7.5: Annotate all serial methods. fhs
  *     2023-05-24: V2.7.6: Use "instanceof" for compatible class check. fhs
  *     2024-07-12: V2.8.0: Add constructor with ProtectedByteArray. fhs
+ *     2024-07-19: V2.8.1: Remove unnecessary try from equals. fhs
  */
 
 package de.xformerfhs.securesecretkeyspec.crypto;
@@ -59,7 +60,7 @@ import java.util.Objects;
  * <p>It is intended to be used as a drop-in replacement for {@code SecretKeySpec}.</p>
  *
  * @author Frank Schwab
- * @version 2.8.0
+ * @version 2.8.1
  */
 public class SecureSecretKeySpec implements KeySpec, SecretKey, Destroyable, AutoCloseable {
    /*
@@ -252,18 +253,13 @@ public class SecureSecretKeySpec implements KeySpec, SecretKey, Destroyable, Aut
       boolean result = this.getAlgorithm().equalsIgnoreCase(other.getAlgorithm());
 
       if (result) {
-         byte[] thisKey = null;
-         byte[] otherKey = null;
+         final byte[] thisKey = this.getEncoded();
+         final byte[] otherKey = other.getEncoded();
 
-         try {
-            thisKey = this.getEncoded();
-            otherKey = other.getEncoded();
+         result = ArrayHelper.constantTimeEquals(thisKey, otherKey);
 
-            result = ArrayHelper.constantTimeEquals(thisKey, otherKey);
-         } finally {
-            ArrayHelper.safeClear(thisKey);
-            ArrayHelper.safeClear(otherKey);
-         }
+         ArrayHelper.clear(thisKey);
+         ArrayHelper.clear(otherKey);
       }
 
       return result;

@@ -26,6 +26,7 @@
  *     2023-05-16: V1.1.1: Use min function. fhs
  *     2024-07-13: V1.2.0: Add concat, copyOrEmpty and splitTail. fhs
  *     2024-07-14: V1.2.1: Clean up methods. fhs
+ *     2024-07-14: V1.3.0: Remove all unused methods. fhs
  */
 
 package de.xformerfhs.securesecretkeyspec.arrays;
@@ -37,7 +38,7 @@ import java.util.Objects;
  * Helper class for array operations.
  *
  * @author Frank Schwab
- * @version 1.2.1
+ * @version 1.3.0
  */
 public class ArrayHelper {
    // ======== Private constants ========
@@ -45,7 +46,6 @@ public class ArrayHelper {
    // Fill values for clear methods
 
    private static final byte CLEAR_BYTE = (byte) 0;
-   private static final char CLEAR_CHAR = '\0';
    private static final int CLEAR_INT = 0;
 
    /**
@@ -83,15 +83,6 @@ public class ArrayHelper {
    }
 
    /**
-    * Clear a character array.
-    *
-    * @param a Character array to clear.
-    */
-   public static void clear(final char[] a) {
-      Arrays.fill(a, CLEAR_CHAR);
-   }
-
-   /**
     * Clear an integer array.
     *
     * @param a Integer array to clear.
@@ -108,96 +99,6 @@ public class ArrayHelper {
    public static void safeClear(final byte[] a) {
       if (a != null)
          Arrays.fill(a, CLEAR_BYTE);
-   }
-
-   /**
-    * Clear a character array and do not throw an exception if it is null.
-    *
-    * @param a Character array to clear.
-    */
-   public static void safeClear(final char[] a) {
-      if (a != null)
-         Arrays.fill(a, CLEAR_CHAR);
-   }
-
-   /**
-    * Clear an integer array and do not throw an exception if it is null.
-    *
-    * @param a Integer array to clear.
-    */
-   public static void safeClear(final int[] a) {
-      if (a != null)
-         Arrays.fill(a, CLEAR_INT);
-   }
-
-   /**
-    * Concatenate byte arrays.
-    *
-    * @param sources Byte arrays to concatenate.
-    * @return Concatenation of the source byte arrays.
-    */
-   public static byte[] concat(final byte[]... sources) {
-      // 1. Calculate total length of result.
-      int totalLength = 0;
-      for (byte[] s : sources)
-         totalLength += s.length;
-
-      // 2. Allocate result array.
-      final byte[] result = new byte[totalLength];
-
-      // 3. Copy sources to result.
-      int offset = 0;
-      for (byte[] s : sources) {
-         final int sLength = s.length;
-         System.arraycopy(s, 0, result, offset, sLength);
-         offset += sLength;
-      }
-
-      return result;
-   }
-
-   /**
-    * Split a tail from a byte array.
-    *
-    * @param source     Source byte array.
-    * @param tailLength length of tail to split.
-    * @return Array of two byte arrays (head, tail).
-    * @throws IllegalArgumentException if {@code tailLength} has an invalid length.
-    */
-   public static byte[][] splitTail(final byte[] source, final int tailLength) {
-      final int sourceLength = source.length;
-      if (tailLength > 0 && tailLength < sourceLength) {
-         final int headLength = sourceLength - tailLength;
-         final byte[] head = Arrays.copyOf(source, headLength);
-         final byte[] tail = Arrays.copyOfRange(source, headLength, sourceLength);
-
-         return new byte[][]{head, tail};
-      } else
-         throw new IllegalArgumentException("Invalid tail length: " + tailLength);
-   }
-
-   /**
-    * Get a copy of the source or an empty byte array, if the source is {@code null}.
-    *
-    * @param source Source byte array.
-    * @return Copy of the source array or an empty byte array, if {@code source} is {@code null}.
-    */
-   public static byte[] copyOrEmpty(final byte[] source) {
-      if (source != null)
-         return Arrays.copyOf(source, source.length);
-      else
-         return EMPTY_BYTE_ARRAY;
-   }
-
-   /**
-    * Get a copy of a byte array, or throw an exception, if it is {@code null}.
-    *
-    * @param source    Source byte array.
-    * @return Copy of {@code source}.
-    * @throws NullPointerException if {@code source} is null.
-    */
-   public static byte[] copyOrException(final byte[] source) {
-      return Arrays.copyOf(Objects.requireNonNull(source), source.length);
    }
 
    /**
