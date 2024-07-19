@@ -46,6 +46,7 @@ package de.xformerfhs.securesecretkeyspec.crypto;
 import de.xformerfhs.securesecretkeyspec.arrays.ArrayHelper;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import javax.security.auth.Destroyable;
 import java.io.*;
 import java.security.spec.KeySpec;
@@ -92,6 +93,11 @@ public class SecureSecretKeySpec implements KeySpec, SecretKey, Destroyable, Aut
     * This class for class tests.
     */
    private final Class<?> thisClass = this.getClass();
+
+   /**
+    * Compatible class for class tests.
+    */
+   private final Class<?> secretKeySpecClass = SecretKeySpec.class;
 
    /**
     * Is this instance valid
@@ -245,7 +251,9 @@ public class SecureSecretKeySpec implements KeySpec, SecretKey, Destroyable, Aut
       if (obj == null)
          return false;
 
-      if (thisClass != obj.getClass())
+      final Class<?> objClass = obj.getClass();
+      if (thisClass != objClass &&
+          secretKeySpecClass != objClass)
          return false;
 
       final SecretKey other = (SecretKey) obj;
