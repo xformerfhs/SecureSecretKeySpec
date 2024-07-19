@@ -63,6 +63,8 @@ import java.util.Objects;
  * @version 2.9.0
  */
 public class SecureSecretKeySpec implements KeySpec, SecretKey, Destroyable, AutoCloseable {
+   // ======== Class constants ========
+
    /*
     * This class implements the Serialization interface because it is inherited from SecretKey
     * but throws an exception whenever a serialization or deserialization is attempted.
@@ -76,6 +78,16 @@ public class SecureSecretKeySpec implements KeySpec, SecretKey, Destroyable, Aut
    @Serial
    private static final long serialVersionUID = -6754161938847519344L;
 
+   /**
+    * This class for class tests.
+    */
+   private static final Class<?> thisClass = SecureSecretKeySpec.class;
+
+   /**
+    * Compatible class for class tests.
+    */
+   private static final Class<?> secretKeySpecClass = SecretKeySpec.class;
+
 
    // ======== Instance variables ========
 
@@ -88,16 +100,6 @@ public class SecureSecretKeySpec implements KeySpec, SecretKey, Destroyable, Aut
     * The algorithm name to hide.
     */
    private final transient ProtectedByteArray algorithm;
-
-   /**
-    * This class for class tests.
-    */
-   private final Class<?> thisClass = this.getClass();
-
-   /**
-    * Compatible class for class tests.
-    */
-   private final Class<?> secretKeySpecClass = SecretKeySpec.class;
 
    /**
     * Is this instance valid
