@@ -242,7 +242,7 @@ public class SecureSecretKeySpec implements KeySpec, SecretKey, Destroyable, Aut
 
       final boolean isObjectCompatible =
             (obj instanceof SecureSecretKeySpec) ||
-                  (obj instanceof SecretKeySpec);
+            (obj instanceof SecretKeySpec);
 
       if (!isObjectCompatible)
          return false;
