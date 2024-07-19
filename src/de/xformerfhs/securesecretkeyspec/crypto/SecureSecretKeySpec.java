@@ -38,7 +38,6 @@
  *     2023-05-20: V2.7.5: Annotate all serial methods. fhs
  *     2023-05-24: V2.7.6: Use "instanceof" for compatible class check. fhs
  *     2024-07-12: V2.8.0: Add constructor with ProtectedByteArray. fhs
- *     2024-07-19: V2.8.1: Remove unnecessary try from equals. fhs
  */
 
 package de.xformerfhs.securesecretkeyspec.crypto;
@@ -60,7 +59,7 @@ import java.util.Objects;
  * <p>It is intended to be used as a drop-in replacement for {@code SecretKeySpec}.</p>
  *
  * @author Frank Schwab
- * @version 2.8.1
+ * @version 2.8.0
  */
 public class SecureSecretKeySpec implements KeySpec, SecretKey, Destroyable, AutoCloseable {
    /*
@@ -253,13 +252,18 @@ public class SecureSecretKeySpec implements KeySpec, SecretKey, Destroyable, Aut
       boolean result = this.getAlgorithm().equalsIgnoreCase(other.getAlgorithm());
 
       if (result) {
-         final byte[] thisKey = this.getEncoded();
-         final byte[] otherKey = other.getEncoded();
+         byte[] thisKey = null;
+         byte[] otherKey = null;
 
-         result = ArrayHelper.constantTimeEquals(thisKey, otherKey);
+         try {
+            thisKey = this.getEncoded();
+            otherKey = other.getEncoded();
 
-         ArrayHelper.clear(thisKey);
-         ArrayHelper.clear(otherKey);
+            result = ArrayHelper.constantTimeEquals(thisKey, otherKey);
+         } finally {
+            ArrayHelper.safeClear(thisKey);
+            ArrayHelper.safeClear(otherKey);
+         }
       }
 
       return result;
