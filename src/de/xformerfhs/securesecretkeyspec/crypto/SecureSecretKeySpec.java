@@ -38,6 +38,7 @@
  *     2023-05-20: V2.7.5: Annotate all serial methods. fhs
  *     2023-05-24: V2.7.6: Use "instanceof" for compatible class check. fhs
  *     2024-07-12: V2.8.0: Add constructor with ProtectedByteArray. fhs
+ *     2024-07-19: V2.9.0: Use class for compatible class check. fhs
  */
 
 package de.xformerfhs.securesecretkeyspec.crypto;
@@ -45,7 +46,6 @@ package de.xformerfhs.securesecretkeyspec.crypto;
 import de.xformerfhs.securesecretkeyspec.arrays.ArrayHelper;
 
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import javax.security.auth.Destroyable;
 import java.io.*;
 import java.security.spec.KeySpec;
@@ -59,7 +59,7 @@ import java.util.Objects;
  * <p>It is intended to be used as a drop-in replacement for {@code SecretKeySpec}.</p>
  *
  * @author Frank Schwab
- * @version 2.8.0
+ * @version 2.9.0
  */
 public class SecureSecretKeySpec implements KeySpec, SecretKey, Destroyable, AutoCloseable {
    /*
@@ -87,6 +87,11 @@ public class SecureSecretKeySpec implements KeySpec, SecretKey, Destroyable, Aut
     * The algorithm name to hide.
     */
    private final transient ProtectedByteArray algorithm;
+
+   /**
+    * This class for class tests.
+    */
+   private final Class<?> thisClass = this.getClass();
 
    /**
     * Is this instance valid
@@ -240,11 +245,7 @@ public class SecureSecretKeySpec implements KeySpec, SecretKey, Destroyable, Aut
       if (obj == null)
          return false;
 
-      final boolean isObjectCompatible =
-            (obj instanceof SecureSecretKeySpec) ||
-            (obj instanceof SecretKeySpec);
-
-      if (!isObjectCompatible)
+      if (thisClass != obj.getClass())
          return false;
 
       final SecretKey other = (SecretKey) obj;
