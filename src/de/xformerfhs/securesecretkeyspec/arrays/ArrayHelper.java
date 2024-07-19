@@ -48,11 +48,6 @@ public class ArrayHelper {
    private static final byte CLEAR_BYTE = (byte) 0;
    private static final int CLEAR_INT = 0;
 
-   /**
-    * Constant empty byte array to return with some functions.
-    */
-   private static final byte[] EMPTY_BYTE_ARRAY = {};
-
 
    // ======== Constructor ========
 
