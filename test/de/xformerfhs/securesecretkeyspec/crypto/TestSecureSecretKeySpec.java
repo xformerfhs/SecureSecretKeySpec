@@ -183,4 +183,16 @@ public class TestSecureSecretKeySpec {
       assertNotEquals("SecureSecretsKeySpecs are equal when they should not be (different keys)", spec1, spec3);
       assertNotEquals("SecureSecretsKeySpecs are equal when they should not be (different algorithms)", spec1, spec4);
    }
+
+   @Test
+   public void TestDifferentClassEquals() {
+      final byte[] key = new byte[32];
+
+      Arrays.fill(key, (byte) 0xaa);
+
+      final SecureSecretKeySpec spec = new SecureSecretKeySpec(key, ALGORITHM_NAME);
+      final MaskedIndex somethingCompletelyDifferent = new MaskedIndex();
+
+      assertNotEquals("SecureSecretsKeySpec and MaskedIndex are equal when they should not be", spec, somethingCompletelyDifferent);
+   }
 }
