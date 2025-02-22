@@ -47,6 +47,7 @@ public class TestSecureSecretKeySpec {
    static final String EXPECTED_EXCEPTION = "Expected exception not thrown";
 
    public TestSecureSecretKeySpec() {
+      // Intentionally left blank.
    }
 
    @BeforeClass
