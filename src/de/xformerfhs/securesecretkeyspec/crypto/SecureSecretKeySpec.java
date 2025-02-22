@@ -62,7 +62,8 @@ import java.util.Objects;
  * @author Frank Schwab
  * @version 2.9.0
  */
-public class SecureSecretKeySpec implements KeySpec, SecretKey, Destroyable, AutoCloseable {
+public class SecureSecretKeySpec
+      implements KeySpec, SecretKey, Destroyable, AutoCloseable {
    // ======== Class constants ========
 
    /*

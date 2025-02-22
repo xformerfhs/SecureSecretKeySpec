@@ -51,18 +51,22 @@ public class TestSecureSecretKeySpec {
 
    @BeforeClass
    public static void setUpClass() {
+      // Intentionally left blank.
    }
 
    @AfterClass
    public static void tearDownClass() {
+      // Intentionally left blank.
    }
 
    @Before
    public void setUp() {
+      // Intentionally left blank.
    }
 
    @After
    public void tearDown() {
+      // Intentionally left blank.
    }
 
    @Test
@@ -191,7 +195,7 @@ public class TestSecureSecretKeySpec {
       Arrays.fill(key, (byte) 0xaa);
 
       final SecureSecretKeySpec spec = new SecureSecretKeySpec(key, ALGORITHM_NAME);
-      final MaskedIndex somethingCompletelyDifferent = new MaskedIndex();
+      final IndexedMask somethingCompletelyDifferent = new IndexedMask();
 
       assertNotEquals("SecureSecretsKeySpec and MaskedIndex are equal when they should not be", spec, somethingCompletelyDifferent);
    }
